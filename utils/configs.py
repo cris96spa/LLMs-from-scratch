@@ -9,7 +9,7 @@ from pydantic_settings import (
 )
 
 
-class YamlBaseSettings(BaseSettings):
+class YamlBaseConfig(BaseSettings):
     @classmethod
     def settings_customise_sources(
         cls,
@@ -36,11 +36,11 @@ class YamlBaseSettings(BaseSettings):
                         "yaml_file_encoding", "utf-8"
                     ),
                 ),
-            )
+            )  # type: ignore
         return sources
 
 
-class GlobalSettings(YamlBaseSettings):
+class GlobalConfig(YamlBaseConfig):
     log_level: str
     model_config = SettingsConfigDict(
         yaml_file="configs/global.yaml",
@@ -50,7 +50,7 @@ class GlobalSettings(YamlBaseSettings):
     )
 
 
-class MlflowLoggerConfig(YamlBaseSettings):
+class MlflowLoggerConfig(YamlBaseConfig):
     """Configuration for the Mlflow logger implementation."""
 
     tracking_uri: AnyHttpUrl | None = None
@@ -68,14 +68,3 @@ class MlflowLoggerConfig(YamlBaseSettings):
         extra="allow",
         yaml_file_encoding="utf-8",
     )
-
-
-if __name__ == "__main__":
-    import os
-
-    print("Working dir:", os.getcwd())
-    print("YAML exists:", os.path.exists("configs/my_settings.yaml"))
-
-    global_settings = GlobalSettings()
-    mlflow_settings = MlflowLoggerConfig()
-    pass

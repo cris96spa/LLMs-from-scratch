@@ -15,7 +15,7 @@ import mlflow.data.pandas_dataset
 import pandas as pd
 
 from utils.logger import logger
-from utils.settings import MlflowLoggerConfig
+from utils.configs import MlflowLoggerConfig
 
 logger.bind("app", "Experiment Logger")
 

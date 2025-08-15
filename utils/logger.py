@@ -2,9 +2,9 @@ import sys
 
 from loguru import logger
 
-from utils.settings_provider import SettingsProvider
+from utils.configs_provider import BaseSettingsProvider
 
-global_settings = SettingsProvider().global_settings
+global_settings = BaseSettingsProvider().global_config
 
 # Configure the logger
 logger.remove()
