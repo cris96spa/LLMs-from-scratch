@@ -2,7 +2,7 @@ import pytest
 import tiktoken
 
 from LLMs_from_scratch.configs.models import TokenizerConfig
-from LLMs_from_scratch.dataloader.tokenizer import Tokenizer
+from LLMs_from_scratch.tokenizer import Tokenizer
 
 
 @pytest.fixture
@@ -69,7 +69,7 @@ def test_config_encoding():
     encoding = tiktoken.get_encoding("gpt2")
     config = TokenizerConfig(encoding=encoding, allowed_special=set())
     tokenizer = Tokenizer(config)
-    assert tokenizer._tokenizer is encoding
+    assert tokenizer.tokenizer is encoding
 
 
 def test_invalid_config():

@@ -1,0 +1,6 @@
+in_features: 3
+out_features: 4
+qkv_bias: False
+dropout: 0.3
+context_length: 6
+num_heads: 2

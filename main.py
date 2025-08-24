@@ -2,7 +2,6 @@ import argparse
 import sys
 
 import loguru
-from LLMs_from_scratch.func import random_sum
 
 if __name__ == "__main__":
     logger = loguru.logger
@@ -20,5 +19,5 @@ if __name__ == "__main__":
 
     logger.info("-" * 50)
     logger.info(f"Input number: {number}")
-    logger.info(f"Output number: {random_sum(number)}")
+    logger.info(f"Output number: {number * 2}")
     logger.info("-" * 50)
