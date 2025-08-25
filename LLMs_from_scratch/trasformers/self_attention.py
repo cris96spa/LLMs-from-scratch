@@ -33,6 +33,7 @@ class SelfAttention(nn.Module):
                 diagonal=1,
             ),
         )
+        self.mask: torch.Tensor = self.mask
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         batch_size, num_tokens, in_features = x.shape

@@ -74,6 +74,7 @@ class MultiHeadedAttention(nn.Module):
                 diagonal=1,
             ),
         )
+        self.mask: torch.Tensor = self.mask
         self.dropout: nn.Dropout = nn.Dropout(p=config.dropout)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:

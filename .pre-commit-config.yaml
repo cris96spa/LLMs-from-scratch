@@ -17,18 +17,7 @@ repos:
     rev: v0.11.11
     hooks:
       - id: ruff-check
-        name: lint ruff
-        entry: ruff check
-        language: system
-        require_serial: true
-        types_or: [python]
-        exclude: "docs"
       - id: ruff-format
-        name: format ruff
-        entry: ruff format
-        language: system
-        require_serial: true
-        types_or: [python]
 
   - repo: local
     hooks:
