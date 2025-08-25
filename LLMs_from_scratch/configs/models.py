@@ -73,7 +73,7 @@ class SelfAttentionConfig(YamlBaseConfig):
     num_heads: int = Field(description="Number of attention heads", ge=1)
 
     model_config = SettingsConfigDict(
-        yaml_file="configs/gpt_2/self_attention.yaml",
+        yaml_file="configs/trasformers/self_attention.yaml",
         case_sensitive=False,
         extra="allow",
         yaml_file_encoding="utf-8",

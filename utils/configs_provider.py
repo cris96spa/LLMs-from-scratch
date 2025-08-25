@@ -1,3 +1,5 @@
+import torch
+
 from utils.configs import GlobalConfig, MlflowLoggerConfig
 from utils.singleton import SingletonMeta
 
@@ -18,3 +20,13 @@ class BaseConfigProvider(metaclass=SingletonMeta):
     def mlflow_configs(self) -> MlflowLoggerConfig:
         """Get the MLflow logger config."""
         return self._mlflow_config
+
+    @property
+    def device(self) -> str:
+        """Get the device to use."""
+        device = torch.device("cpu")
+        if torch.cuda.is_available():
+            device = torch.device("cuda")
+        elif torch.backends.mps.is_available():
+            device = torch.device("mps")
+        return device
