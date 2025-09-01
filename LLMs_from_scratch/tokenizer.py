@@ -28,24 +28,10 @@ class Tokenizer(BaseTokenizer):
 
     @override
     def encode(self, text: str) -> list[int]:
-        """Encode text into a list of token IDs
-
-        Args:
-            text (str): The text to encode.
-
-        Returns:
-            list[int]: The encoded token IDs.
-        """
+        """Encode text into a list of token IDs."""
         return self.tokenizer.encode(text, allowed_special=self._allowed_special)
 
     @override
     def decode(self, ids: list[int]) -> str:
-        """Decode a list of token IDs into text.
-
-        Args:
-            ids (list[int]): The list of token IDs to decode.
-
-        Returns:
-            str: The decoded text.
-        """
+        """Decode a list of token IDs into text."""
         return self.tokenizer.decode(ids)
