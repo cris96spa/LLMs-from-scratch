@@ -3,7 +3,7 @@ import torch
 
 from LLMs_from_scratch.configs.configs_provider import ConfigsProvider
 from LLMs_from_scratch.configs.models import SelfAttentionConfig
-from LLMs_from_scratch.trasformers.multi_headed_attention import MultiHeadedAttention
+from LLMs_from_scratch.transformers.multi_headed_attention import MultiHeadedAttention
 
 
 @pytest.fixture

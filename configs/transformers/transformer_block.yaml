@@ -1,0 +1,14 @@
+attention_config:
+  in_features: 768
+  out_features: 768
+  qkv_bias: False
+  dropout: 0.1
+  context_length: 1024
+  num_heads: 12
+layer_norm_config:
+  in_features: 768
+  eps: 1e-05
+  unbiased: False
+feed_forward_config:
+  in_features: 768
+dropout: 0.1

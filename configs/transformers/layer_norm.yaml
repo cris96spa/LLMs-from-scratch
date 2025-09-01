@@ -1,0 +1,3 @@
+in_features: 3
+eps: 1e-05
+unbiased: False
