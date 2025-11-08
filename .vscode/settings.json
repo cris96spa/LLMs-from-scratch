@@ -16,5 +16,12 @@
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
   "python.languageServer": "Pylance",
-  "python.analysis.indexing": true
+  "python.analysis.indexing": true,
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.profiles.osx": {
+    "zsh": {
+      "path": "/bin/zsh",
+      "args": ["-l"]
+    }
+  }
 }
