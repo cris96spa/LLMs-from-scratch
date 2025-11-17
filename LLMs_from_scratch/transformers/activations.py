@@ -1,4 +1,5 @@
-import matplotlib.pyplot as plt
+import pandas as pd
+import plotly.express as px
 import torch
 from torch import nn
 
@@ -27,17 +28,35 @@ if __name__ == "__main__":
     gelu = GELU()
     relu = nn.ReLU()
     silu = nn.SiLU()
+    tanh = nn.Tanh()
+    softmax = nn.Softmax()
+    celu = nn.CELU()
 
-    X = torch.linspace(-3, 3, 100)
+    X = torch.linspace(-5, 5, 100)
     y_gelu, y_relu = gelu(X), relu(X)
     y_silu = silu(X)
-    plt.figure(figsize=(10, 5))
-    plt.plot(X, y_gelu, label="GELU", color="blue")
-    plt.plot(X, y_relu, label="ReLU", color="red")
-    plt.plot(X, y_silu, label="SiLU", color="orange")
-    plt.title("GELU vs ReLU Activation Functions")
-    plt.xlabel("Input")
-    plt.ylabel("Output")
-    plt.legend()
-    plt.grid()
-    plt.show()
+    y_tanh = tanh(X)
+    y_celu = celu(X)
+    y_softmax = softmax(X)
+
+    df = pd.DataFrame(
+        {
+            "Input": X.numpy(),
+            "GELU": y_gelu.numpy(),
+            "ReLU": y_relu.numpy(),
+            "SiLU": y_silu.numpy(),
+            "Tanh": y_tanh.numpy(),
+            "Softmax": y_softmax.numpy(),
+            "CELU": y_celu.numpy(),
+        }
+    )
+
+    # Plot using plotly
+    fig = px.line(
+        df,
+        y=["GELU", "ReLU", "SiLU", "Tanh", "Softmax", "CELU"],
+        x="Input",
+        title="Activation Functions: GELU vs ReLU vs SiLU vs Tanh vs Softmax vs CELU",
+        labels={"value": "Activation Output", "Input": "Input Value"},
+    )
+    fig.show()

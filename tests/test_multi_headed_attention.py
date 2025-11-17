@@ -1,5 +1,6 @@
 import pytest
 import torch
+from pydantic import ValidationError
 
 from LLMs_from_scratch.configs.configs_provider import ConfigsProvider
 from LLMs_from_scratch.configs.models import SelfAttentionConfig
@@ -46,15 +47,15 @@ def test_output_shape(
 
 
 def test_invalid_heads_raises(device: str):
-    bad_cfg = SelfAttentionConfig(
-        in_features=8,
-        out_features=10,
-        num_heads=3,
-        qkv_bias=False,
-        context_length=64,
-        dropout=0.0,
-    )  # 10 % 3 != 0
-    with pytest.raises(ValueError):
+    with pytest.raises(ValidationError):
+        bad_cfg = SelfAttentionConfig(
+            in_features=8,
+            out_features=10,
+            num_heads=3,
+            qkv_bias=False,
+            context_length=64,
+            dropout=0.0,
+        )  # 10 % 3 != 0
         _ = MultiHeadedAttention(bad_cfg).to(device)
 
 
@@ -150,7 +151,7 @@ def test_head_split_merge_dimensions(device: str):
     cfg = SelfAttentionConfig(
         in_features=12,
         out_features=24,
-        num_heads=6,  # head_dim = 4
+        num_heads=6,
         qkv_bias=True,
         context_length=32,
         dropout=0.0,

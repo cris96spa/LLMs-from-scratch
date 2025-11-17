@@ -2,22 +2,22 @@ import numpy as np
 import torch
 from torch.utils.data import Dataset
 
-from LLMs_from_scratch.configs.configs_provider import ConfigsProvider
 from LLMs_from_scratch.configs.models import GPTDatasetConfig
 from LLMs_from_scratch.tokenizer import Tokenizer
 
 
 class GPTDataset(Dataset):
-    def __init__(self, config: GPTDatasetConfig):
+    def __init__(self, config: GPTDatasetConfig, tokenizer: Tokenizer):
         self._config = config
         self._max_length = self._config.max_length
         self._stride = self._config.stride
 
-        self.tokenizer: Tokenizer = Tokenizer(ConfigsProvider().tokenizer_config)
+        self.tokenizer: Tokenizer = tokenizer
         self.raw_text = self._config.file_path.read_text(encoding="utf-8")
         self._load_data()
 
     def _load_data(self) -> None:
+        """Load data"""
         ids = np.array(self.tokenizer.encode(self.raw_text), dtype=np.float32)
 
         if ids.size < self._max_length:
@@ -34,6 +34,7 @@ class GPTDataset(Dataset):
         self.target_ids = torch.tensor(targets, dtype=torch.int32)
 
     def _load_data_tensor(self) -> None:
+        """Load data using torch tensors"""
         ids = torch.tensor(self.tokenizer.encode(self.raw_text), dtype=torch.int32)
 
         if ids.numel() < self._max_length:

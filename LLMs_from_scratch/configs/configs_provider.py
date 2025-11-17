@@ -1,6 +1,7 @@
 from LLMs_from_scratch.configs.models import (
     DataLoaderConfig,
     FeedForwardConfig,
+    Gpt2ModelConfig,
     GPTDatasetConfig,
     LayerNormConfig,
     SelfAttentionConfig,
@@ -26,6 +27,7 @@ class ConfigsProvider(BaseConfigProvider):
         self._feed_forward_config: FeedForwardConfig | None = None
         self._transformer_block_config: TransformerBlockConfig | None = None
 
+        self._gpt_2_model_config: Gpt2ModelConfig | None = None
         self._simple_skip_connection_network_config: (
             SimpleSkipConnectionNetworkConfig | None
         ) = None
@@ -87,3 +89,10 @@ class ConfigsProvider(BaseConfigProvider):
         if self._transformer_block_config is None:
             self._transformer_block_config = TransformerBlockConfig()
         return self._transformer_block_config
+
+    @property
+    def gpt_2_model_config(self):
+        """Get the GPT-2 model config."""
+        if self._gpt_2_model_config is None:
+            self._gpt_2_model_config = Gpt2ModelConfig()
+        return self._gpt_2_model_config

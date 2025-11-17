@@ -87,6 +87,15 @@ class SelfAttentionConfig(YamlBaseConfig):
         yaml_file_encoding="utf-8",
     )
 
+    @model_validator(mode="after")
+    def validate_num_heads(self):
+        if self.in_features % self.num_heads != 0:
+            raise ValueError(
+                "in_features must be divisible by num_heads. "
+                f"Got in_features: {self.in_features}, num_heads: {self.num_heads}"
+            )
+        return self
+
 
 class LayerNormConfig(YamlBaseConfig):
     in_features: int = Field(
@@ -167,4 +176,41 @@ class TransformerBlockConfig(YamlBaseConfig):
             != self.feed_forward_config.in_features
             != self.layer_norm_config.in_features
         ):
-            raise ValueError("All sub-configs must have the same in_features")
+            raise ValueError(
+                "All sub-configs must have the same in_features. Got: "
+                f"attention_config.in_features: {self.attention_config.in_features}, "
+                f"feed_forward_config.in_features: {self.feed_forward_config.in_features}, "
+                f"layer_norm_config.in_features: {self.layer_norm_config.in_features}"
+            )
+        return self
+
+
+class Gpt2ModelConfig(YamlBaseConfig):
+    vocab_size: int = Field(description="Size of the vocabulary", ge=1)
+    context_length: int = Field(description="Length of the context window", ge=1)
+    embedding_dim: int = Field(description="Dimension of the embeddings", ge=1)
+    num_layers: int = Field(description="Number of transformer layers", ge=1)
+    dropout: float = Field(
+        description="Dropout rate for attention weights", ge=0.0, lt=1.0
+    )
+    layer_norm_config: LayerNormConfig = Field(
+        description="Configuration for final layer normalization"
+    )
+
+    model_config = SettingsConfigDict(
+        yaml_file="configs/transformers/gpt_2_model.yaml",
+        case_sensitive=False,
+        extra="allow",
+        yaml_file_encoding="utf-8",
+    )
+
+    @model_validator(mode="after")
+    def validate_embedding_dim(self):
+        if self.embedding_dim != self.layer_norm_config.in_features:
+            raise ValueError(
+                "embedding_dim must be equal to transformer_block_config.attention_config.in_features. "
+                f"Got embedding_dim: {self.embedding_dim}, "
+                f"transformer_block_config.attention_config.in_features: {self.transformer_block_config.attention_config.in_features}, "
+                f"layer_norm_config.in_features: {self.layer_norm_config.in_features}"
+            )
+        return self

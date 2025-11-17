@@ -25,7 +25,7 @@ class TransformerBlock(nn.Module):
         x = self.layer_norm_pre_attention(x)
         x = self.multi_headed_attention(x)
         x = self.drop_shortcut(x)
-        x = x = shortcut
+        x = x + shortcut
 
         shortcut = x
         x = self.layer_norm_pre_feedforward(x)

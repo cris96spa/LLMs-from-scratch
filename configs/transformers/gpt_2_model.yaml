@@ -1,0 +1,9 @@
+vocab_size: 50257
+context_length: 1024
+embedding_dim: 768
+layer_norm_config:
+  in_features: 768
+  eps: 1e-05
+  unbiased: False
+num_layers: 12
+dropout: 0.1
