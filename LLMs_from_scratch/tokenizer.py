@@ -22,7 +22,7 @@ class Tokenizer(BaseTokenizer):
     def __init__(self, config: TokenizerConfig):
         self._config: TokenizerConfig = config
         self.tokenizer: tiktoken.Encoding = (
-            config.encoding or tiktoken.encoding_for_model(config.model_name)  # type: ignore[arg-type]
+            config.encoding or tiktoken.encoding_for_model(config.model_name)
         )
         self._allowed_special = config.allowed_special
 

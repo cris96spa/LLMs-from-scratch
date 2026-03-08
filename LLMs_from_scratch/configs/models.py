@@ -1,7 +1,8 @@
 from pathlib import Path
 from typing import AbstractSet, Literal
 
-from pydantic import Field, model_validator
+import polars as pl
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 from pydantic_settings import SettingsConfigDict
 from tiktoken import Encoding
 
@@ -44,6 +45,38 @@ class GPTDatasetConfig(YamlBaseConfig):
         extra="allow",
         yaml_file_encoding="utf-8",
     )
+
+
+class SpamDatasetConfig(YamlBaseConfig):
+    file_path: Path = Field(description="The file path to the dataset")
+    max_length: int | None = Field(
+        description="The maximum length of the input sequences", default=None
+    )
+    pad_token_id: int = Field(
+        description="The token ID used for padding sequences", default=50256
+    )
+
+    label_column_name: str = Field(
+        description="The name of the label column", default="Label"
+    )
+    text_column_name: str = Field(
+        description="The name of the text column", default="Text"
+    )
+    label_mapping: dict[str, int] = Field(
+        description="Mapping of label names to integer IDs",
+        default_factory=lambda: {"ham": 0, "spam": 1},
+    )
+    model_config = SettingsConfigDict(
+        yaml_file="configs/dataloader/spam_dataset.yaml",
+        case_sensitive=False,
+        extra="allow",
+        yaml_file_encoding="utf-8",
+    )
+
+    @property
+    def column_names(self) -> list[str]:
+        """Get the column names for the dataset."""
+        return [self.label_column_name, self.text_column_name]
 
 
 class DataLoaderConfig(YamlBaseConfig):
@@ -214,3 +247,14 @@ class Gpt2ModelConfig(YamlBaseConfig):
                 f"layer_norm_config.in_features: {self.layer_norm_config.in_features}"
             )
         return self
+
+
+class TrainValTestSplit(BaseModel):
+    train: pl.DataFrame = Field(description="The training dataset.")
+    val: pl.DataFrame = Field(description="The validation dataset.")
+    test: pl.DataFrame = Field(description="The test dataset.")
+
+    # Allow arbitrary types for the DataFrames
+    model_config = ConfigDict(
+        arbitrary_types_allowed=True,
+    )

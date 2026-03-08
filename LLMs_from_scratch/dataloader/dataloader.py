@@ -2,7 +2,7 @@ from torch.utils.data import DataLoader
 
 from LLMs_from_scratch.configs.configs_provider import ConfigsProvider
 from LLMs_from_scratch.configs.models import DataLoaderConfig
-from LLMs_from_scratch.dataloader.dataset import GPTDataset
+from LLMs_from_scratch.dataloader.gpt_2_dataset import GPTDataset
 from LLMs_from_scratch.tokenizer import Tokenizer
 
 
