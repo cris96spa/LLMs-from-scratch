@@ -14,10 +14,10 @@ import mlflow
 import mlflow.data.pandas_dataset
 import pandas as pd
 
-from utils.logger import logger
 from utils.configs import MlflowLoggerConfig
+from utils.logger import logger
 
-logger.bind("app", "Experiment Logger")
+logger.bind(app="Experiment Logger")
 
 
 class BaseExperimentLogger(ABC):
