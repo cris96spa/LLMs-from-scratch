@@ -30,3 +30,8 @@ class BaseConfigProvider(metaclass=SingletonMeta):
         elif torch.backends.mps.is_available():
             device = "mps"
         return device
+
+    @property
+    def seed(self) -> int:
+        """Get the seed for reproducibility."""
+        return self.global_config.seed

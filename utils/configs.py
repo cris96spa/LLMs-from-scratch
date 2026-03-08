@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from pydantic import AnyHttpUrl
+from pydantic import AnyHttpUrl, Field
 from pydantic_settings import (
     BaseSettings,
     PydanticBaseSettingsSource,
@@ -41,7 +41,8 @@ class YamlBaseConfig(BaseSettings):
 
 
 class GlobalConfig(YamlBaseConfig):
-    log_level: str
+    log_level: str = Field(description="The logging level for the application.")
+    seed: int = Field(description="The seed for reproducibility.")
     model_config = SettingsConfigDict(
         yaml_file="configs/global.yaml",
         case_sensitive=False,
@@ -53,14 +54,22 @@ class GlobalConfig(YamlBaseConfig):
 class MlflowLoggerConfig(YamlBaseConfig):
     """Configuration for the Mlflow logger implementation."""
 
-    tracking_uri: AnyHttpUrl | None = None
-    remote_tracking_uri: AnyHttpUrl | None = None
-    instance: str
-    remote_flag: bool
-    trace: bool
-    templates_path: Path
-    artifact_path: str
-    run_name: str | None = None
+    tracking_uri: AnyHttpUrl | None = Field(
+        description="The tracking URI for the Mlflow logger.",
+        default=None,
+    )
+    remote_tracking_uri: AnyHttpUrl | None = Field(
+        description="The remote tracking URI for the Mlflow logger.",
+        default=None,
+    )
+    instance: str = Field(description="The instance name for the Mlflow logger.")
+    remote_flag: bool = Field(description="Whether to use remote tracking.")
+    trace: bool = Field(description="Whether to enable tracing.")
+    templates_path: Path = Field(description="The path to the templates directory.")
+    artifact_path: str = Field(description="The path to the artifacts directory.")
+    run_name: str | None = Field(
+        description="The name of the MLflow run.", default=None
+    )
 
     model_config = SettingsConfigDict(
         yaml_file="configs/mlflow_logger.yaml",
